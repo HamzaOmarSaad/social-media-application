@@ -1,0 +1,30 @@
+{
+  "name": "social-media-application",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/HamzaOmarSaad/social-media-application#readme",
+  "bugs": {
+    "url": "https://github.com/HamzaOmarSaad/social-media-application/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HamzaOmarSaad/social-media-application.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "./dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start:dev": "node --env-file=config/.env.dev --watch ./dist/index.js",
+    "start:build": "tsc -w"
+  },
+  "dependencies": {
+    "express": "^5.2.1",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.6",
+    "@types/node": "^25.6.0"
+  }
+}

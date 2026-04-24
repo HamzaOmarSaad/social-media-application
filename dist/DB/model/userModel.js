@@ -33,21 +33,22 @@ var __importStar = (this && this.__importStar) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.signupSchema = void 0;
-const z = __importStar(require("zod"));
-exports.signupSchema = {
-    body: z
-        .object({
-        name: z.string().min(3).max(16),
-        email: z.email().min(3).max(4),
-        password: z.string().min(8).max(25),
-        repassword: z.string().min(8).max(25),
-        age: z.number().optional(),
-    })
-        .refine((val) => {
-        return val?.password === val?.repassword;
-    }, {
-        error: "password dont match  ",
-        path: ["password", "repassword"],
-    }),
-};
+const mongoose_1 = __importStar(require("mongoose"));
+const userSchema = new mongoose_1.default.Schema({
+    name: {
+        type: String,
+        required: true,
+    },
+    email: {
+        type: String,
+        required: true,
+    },
+    password: {
+        type: String,
+        required: true,
+    },
+}, {
+    timestamps: true,
+});
+const UserModel = mongoose_1.default.models.user || (0, mongoose_1.model)("user", userSchema);
+exports.default = UserModel;

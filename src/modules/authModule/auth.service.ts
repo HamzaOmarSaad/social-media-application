@@ -1,3 +1,3 @@
-import { ISignUp } from "./auth.types";
+import { ISignup } from "./auth.types";
 
-export const SignupService = ({ name, email, password, phone }: ISignUp) => {};
+export const SignupService = ({ name, email, password, phone }: ISignup) => {};

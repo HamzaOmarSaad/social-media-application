@@ -1,3 +1,5 @@
+import { $ZodIssue } from "zod/v4/core";
+
 export class AppError extends Error {
   constructor(
     message: string,
@@ -24,7 +26,7 @@ export class conflictException extends AppError {
   }
 }
 export class validationException extends AppError {
-  constructor(message: string) {
-    super(message, 400);
+  constructor(message: Array<$ZodIssue>) {
+    super(message as unknown as string, 400);
   }
 }

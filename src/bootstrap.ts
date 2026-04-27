@@ -1,7 +1,7 @@
 import express, { Express, Request, Response, NextFunction } from "express";
 import userRouter from "./modules/userModule/user.controller";
 import { PORT } from "./env/config";
-import { IAppError } from "./utils/types/res";
+import { IAppError } from "./utils/types/res.type";
 import { NotFoundException } from "./utils/res/error.handle";
 import { connectDB } from "./DB/config/connection";
 
@@ -28,7 +28,7 @@ const bootstrap = async () => {
     }
   });
   app.listen(PORT, () => {
-    console.log("server runnug on port ", PORT);
+    console.log("server running on port ", PORT);
   });
 };
 export default bootstrap;

@@ -6,16 +6,16 @@ export const signupSchema = {
       name: z.string().min(3).max(16),
       email: z.email().min(3).max(4),
       password: z.string().min(8).max(25),
-      repassword: z.string().min(8).max(25),
+      rePassword: z.string().min(8).max(25),
       age: z.number().optional(),
     })
     .refine(
       (val) => {
-        return val?.password === val?.repassword;
+        return val?.password === val?.rePassword;
       },
       {
         error: "password dont match  ",
-        path: ["password", "repassword"],
+        path: ["password", "rePassword"],
       },
     ),
 };
@@ -26,7 +26,7 @@ export interface ISignup {
   password: string;
   phone: string;
 }
-export interface Ilogin {
+export interface ILogin {
   email: string;
   password: string;
 }

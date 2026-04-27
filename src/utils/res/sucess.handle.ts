@@ -1,11 +1,11 @@
-import { ISucess } from "../types/res";
+import { ISuccess } from "../types/res.type";
 
-export const sucessRes = ({
+export const successRes = ({
   res,
   message,
   data = {},
   statusCode = 200,
-}: ISucess) => {
+}: ISuccess) => {
   return res.status(statusCode).json({
     message,
     statusCode,

@@ -34,6 +34,7 @@ var __importStar = (this && this.__importStar) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importStar(require("mongoose"));
+const enums_1 = require("../../Enums/enums");
 const userSchema = new mongoose_1.default.Schema({
     name: {
         type: String,
@@ -50,8 +51,30 @@ const userSchema = new mongoose_1.default.Schema({
     phone: {
         type: String,
     },
+    isEmailConfirmed: {
+        type: Boolean,
+        default: false,
+    },
+    isDeleted: {
+        type: Boolean,
+        default: false,
+    },
+    provider: {
+        type: String,
+        default: enums_1.providerEnum.system,
+        enum: [enums_1.providerEnum.system, enums_1.providerEnum.google],
+    },
+    gender: {
+        type: Number,
+        default: enums_1.GenderEnum.male,
+        enum: [enums_1.GenderEnum.male, enums_1.GenderEnum.female],
+    },
 }, {
     timestamps: true,
+    strict: true,
+    strictQuery: true,
+    toJSON: { virtuals: true, getters: true },
+    toObject: { virtuals: true, getters: true },
 });
 const UserModel = mongoose_1.default.models.user || (0, mongoose_1.model)("user", userSchema);
 exports.default = UserModel;

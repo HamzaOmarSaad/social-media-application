@@ -21,12 +21,10 @@ const generateTokenService = ({ payload, options = {}, tokenType, }) => {
 exports.generateTokenService = generateTokenService;
 const verifyToken = ({ token, tokenType }) => {
     try {
-        if (tokenType === "access") {
+        if (tokenType === "access" || tokenType === "refresh") {
             return jsonwebtoken_1.default.verify(token, config_1.JWT_SECRET);
         }
-        if (tokenType === "refresh") {
-            return jsonwebtoken_1.default.verify(token, config_1.JWT_SECRET);
-        }
+        throw new error_handle_1.badReqException("Invalid token type");
     }
     catch (err) {
         throw new error_handle_1.badReqException("Token verification failed");

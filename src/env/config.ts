@@ -11,3 +11,6 @@ export const ACCESS_EXPIRES_IN = env["ACCESS_EXPIRES_IN"] as unknown as number;
 export const REFRESH_EXPIRES_IN = env[
   "REFRESH_EXPIRES_IN"
 ] as unknown as number;
+
+export const REDIS_DB_URI = env["REDIS_DB_URI"] as unknown as string;
+export const REDIS_DB_NAME = env["REDIS_DB_NAME"] as unknown as number;

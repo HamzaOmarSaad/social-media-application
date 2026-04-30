@@ -30,10 +30,12 @@ const userSchema: Schema<IUser> = new mongoose.Schema(
     provider: {
       type: String,
       default: providerEnum.system,
+      enum: [providerEnum.system, providerEnum.google],
     },
     gender: {
       type: Number,
       default: GenderEnum.male,
+      enum: [GenderEnum.male, GenderEnum.female],
     },
   },
   {

@@ -12,6 +12,7 @@ const app = (0, express_1.default)();
 const bootstrap = async () => {
     app.use(express_1.default.json());
     await (0, connection_1.connectDB)();
+    await (0, connection_1.connectRedisDB)();
     app.use("/users", user_controller_1.default);
     // unknown path
     app.all("{/*dummy}", (req, res, next) => {
@@ -29,7 +30,7 @@ const bootstrap = async () => {
         }
     });
     app.listen(config_1.PORT, () => {
-        console.log("server runnug on port ", config_1.PORT);
+        console.log("server running on port ", config_1.PORT);
     });
 };
 exports.default = bootstrap;

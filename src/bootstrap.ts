@@ -3,13 +3,14 @@ import userRouter from "./modules/userModule/user.controller";
 import { PORT } from "./env/config";
 import { IAppError } from "./utils/types/res.type";
 import { NotFoundException } from "./utils/res/error.handle";
-import { connectDB } from "./DB/config/connection";
+import { connectDB, connectRedisDB } from "./DB/config/connection";
 
 const app: Express = express();
 
 const bootstrap = async () => {
   app.use(express.json());
   await connectDB();
+  await connectRedisDB();
   app.use("/users", userRouter);
 
   // unknown path

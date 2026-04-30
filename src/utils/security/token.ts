@@ -38,13 +38,11 @@ export const generateTokenService = ({
 };
 export const verifyToken = ({ token, tokenType }: TokenVerifyType) => {
   try {
-    if (tokenType === "access") {
+    if (tokenType === "access" || tokenType === "refresh") {
       return jwt.verify(token, JWT_SECRET);
     }
 
-    if (tokenType === "refresh") {
-      return jwt.verify(token, JWT_SECRET);
-    }
+    throw new badReqException("Invalid token type");
   } catch (err) {
     throw new badReqException("Token verification failed");
   }

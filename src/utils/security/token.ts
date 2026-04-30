@@ -6,7 +6,7 @@ import {
 } from "../../env/config";
 import { badReqException } from "../res/error.handle";
 
-const tokenTypeEnum = {
+export const tokenTypeEnum = {
   access: "access",
   refresh: "refresh",
 } as const;
@@ -36,7 +36,7 @@ export const generateTokenService = ({
     ...options,
   });
 };
-export const verifyToken = ({ token, tokenType }: TokenVerifyType) => {
+export const verifyTokenService = ({ token, tokenType }: TokenVerifyType) => {
   try {
     if (tokenType === "access" || tokenType === "refresh") {
       return jwt.verify(token, JWT_SECRET);

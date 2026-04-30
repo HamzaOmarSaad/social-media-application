@@ -1,4 +1,5 @@
 import * as z from "zod";
+import { GenderEnum } from "../../Enums/enums";
 
 export const signupSchema = {
   body: z
@@ -8,6 +9,8 @@ export const signupSchema = {
       password: z.string().min(8).max(25),
       rePassword: z.string().min(8).max(25),
       age: z.number().optional(),
+      gender: z.number().optional(),
+      phone: z.string().optional(),
     })
     .refine(
       (val) => {
@@ -21,10 +24,11 @@ export const signupSchema = {
 };
 
 export interface ISignup {
-  name: string;
+  userName: string;
   email: string;
   password: string;
   phone: string;
+  gender: GenderEnum;
 }
 export interface ILogin {
   email: string;

@@ -9,7 +9,7 @@ export interface IUser {
   phone: string;
   isEmailConfirmed: boolean;
   isDeleted: boolean;
-  role: string;
+  role: number;
   provider: providerEnum;
   gender: GenderEnum;
 }

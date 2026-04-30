@@ -7,7 +7,7 @@ export interface IAppError extends Error {
 }
 export interface ISuccess {
   res: Response;
-  data?: object;
+  data?: any;
   statusCode?: number;
   message?: string;
 }

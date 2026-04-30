@@ -1,6 +1,6 @@
 import mongoose, { model, Schema } from "mongoose";
 import { IUser } from "../../utils/types/db.type";
-import { GenderEnum, providerEnum } from "../../Enums/enums";
+import { GenderEnum, providerEnum, RoleEnum } from "../../Enums/enums";
 
 const userSchema: Schema<IUser> = new mongoose.Schema(
   {
@@ -36,6 +36,11 @@ const userSchema: Schema<IUser> = new mongoose.Schema(
       type: Number,
       default: GenderEnum.male,
       enum: [GenderEnum.male, GenderEnum.female],
+    },
+    role: {
+      type: Number,
+      default: RoleEnum.user,
+      enum: [RoleEnum.user, RoleEnum.admin],
     },
   },
   {

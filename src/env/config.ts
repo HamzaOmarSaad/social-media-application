@@ -20,4 +20,4 @@ export const REFRESH_EXPIRES_IN = env[
 export const REDIS_DB_URI = env["REDIS_DB_URI"] as unknown as string;
 export const REDIS_DB_NAME = env["REDIS_DB_NAME"] as unknown as number;
 
-export const CLIENT_ID = env["CLIENT_ID"] as unknown as number;
+export const CLIENT_ID = env["CLIENT_ID"] as unknown as string;

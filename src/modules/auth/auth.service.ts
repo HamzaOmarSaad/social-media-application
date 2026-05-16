@@ -11,22 +11,28 @@ import redisService from "../../utils/redis/redis.service";
 import {
   badReqException,
   conflictException,
+  NotFoundException,
 } from "../../utils/res/exceptions/domain.exceptions";
 import { encryptService } from "../../utils/security/encryption";
 import { hashService, verifyHashService } from "../../utils/security/hashing";
 import { TokenService } from "../../utils/security/token";
-import { IUser } from "../../utils/types/db.type";
+import { HUser, IUser } from "../../utils/types/db.type";
 import { ILoginDTO, ISignupDTO } from "./auth.dto";
 import { UserRepo, userRepository } from "../../DB/repos/user.repo";
+import { CLIENT_ID } from "../../env/config";
+import { OAuth2Client } from "google-auth-library";
 
 class authServices {
   private userRepo: UserRepo;
   private redis: typeof redisService;
   private tokenService;
+  private GoogleClient;
+
   constructor() {
     this.userRepo = userRepository;
     this.redis = redisService;
     this.tokenService = new TokenService();
+    this.GoogleClient = new OAuth2Client(CLIENT_ID);
   }
 
   private async sendEmailOTP({
@@ -206,5 +212,78 @@ class authServices {
 
     return { message: " signup done login to proceed", user };
   }
+  private async VerifyGoogleAccount(googleToken: string) {
+    const ticket = await this.GoogleClient.verifyIdToken({
+      idToken: googleToken,
+      audience: CLIENT_ID,
+    });
+    const payload = ticket.getPayload();
+    if (!payload?.email_verified) {
+      throw new badReqException("invalid token payload");
+    }
+    return payload;
+  }
+  public LoginWithGoogleService = async (
+    googleToken: string,
+    iss: string,
+  ): Promise<{
+    accessToken: string;
+    refreshToken: string;
+  }> => {
+    const payload = await this.VerifyGoogleAccount(googleToken);
+
+    const isEmailExist = await this.userRepo.findByEmail(
+      payload?.email as string,
+    );
+    if (!isEmailExist) {
+      throw new NotFoundException("invalid token payload");
+    }
+    if (isEmailExist.provider != providerEnum.google) {
+      throw new conflictException("wrong provider use system login ");
+    }
+    const { accessToken, refreshToken } = this.tokenService.createLoginTokens({
+      iss,
+      user: isEmailExist,
+    });
+
+    return { accessToken, refreshToken };
+  };
+  public SignupWithGoogleService = async (
+    googleToken: string,
+    iss: string,
+  ): Promise<{
+    credentials: { accessToken: string; refreshToken: string };
+  }> => {
+    const payload = await this.VerifyGoogleAccount(googleToken);
+
+    const isEmailExist = await this.userRepo.findByEmail(
+      payload?.email as string,
+    );
+
+    if (isEmailExist) {
+      if (isEmailExist.provider != providerEnum.google) {
+        throw new conflictException("wrong provider use system login ");
+      }
+      return {
+        credentials: await this.LoginWithGoogleService(googleToken, iss),
+      };
+    }
+    // sign up
+    const data: IUser = {
+      userName: payload.name as string,
+      email: payload.email as string,
+      provider: providerEnum.google,
+      isEmailConfirmed: new Date(),
+      role: RoleEnum.user,
+    };
+    const newUser: HUser = await this.userRepo.create(data);
+
+    const { accessToken, refreshToken } = this.tokenService.createLoginTokens({
+      iss,
+      user: newUser,
+    });
+
+    return { credentials: { accessToken, refreshToken } };
+  };
 }
 export default new authServices();

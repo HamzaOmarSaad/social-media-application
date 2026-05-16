@@ -6,10 +6,13 @@ import { connectDB } from "./DB/config/connection";
 import { authRouter } from "./modules";
 import { NotFoundException } from "./utils/res/exceptions/domain.exceptions";
 
+import cors from "cors";
+
 const app: Express = express();
 
 const bootstrap = async () => {
   app.use(express.json());
+  app.use(cors());
 
   //db connections
   await connectDB();

@@ -20,9 +20,12 @@
     "start:build": "tsc -w"
   },
   "dependencies": {
+    "@types/cors": "^2.8.19",
     "bcrypt": "^6.0.0",
+    "cors": "^2.8.6",
     "crypto-js": "^4.2.0",
     "express": "^5.2.1",
+    "google-auth-library": "^10.6.2",
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.5.0",
     "nodemailer": "^8.0.7",

@@ -1,4 +1,11 @@
+// Services/sendEmail.ts
+
 import nodemailer from "nodemailer";
+
+if (!process.env.EMAIL || !process.env.EMAIL_PASS) {
+  throw new Error("Missing EMAIL environment variables");
+}
+
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
@@ -7,29 +14,33 @@ const transporter = nodemailer.createTransport({
   },
 });
 
+interface SendEmailOptions {
+  to: string;
+  cc?: string;
+  subject: string;
+  html: string;
+}
+
 export const sendEmailService = async ({
   to,
   cc,
   subject,
   html,
-}: {
-  to: string;
-  cc: string;
-  subject: string;
-  html: string;
-}) => {
+}: SendEmailOptions) => {
   try {
     const info = await transporter.sendMail({
-      from: `"social media app " <${process.env.EMAIL}>`,
+      from: `"Social Media App" <${process.env.EMAIL}>`,
       to,
       cc,
       subject,
       html,
     });
-    console.log("email sent :%s", info.accepted);
+
+    console.log("Email sent:", info.accepted);
+
     return info;
   } catch (error) {
-    console.log("error is found : " + error);
+    console.error("Email sending failed:", error);
     throw error;
   }
 };

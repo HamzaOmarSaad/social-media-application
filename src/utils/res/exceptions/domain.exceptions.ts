@@ -1,14 +1,5 @@
 import { $ZodIssue } from "zod/v4/core";
-
-export class AppError extends Error {
-  constructor(
-    message: string,
-    public statusCode?: number,
-    options?: ErrorOptions,
-  ) {
-    super(message, options);
-  }
-}
+import { AppError } from "./error.handle";
 
 export class NotFoundException extends AppError {
   constructor(message?: string) {
@@ -28,5 +19,11 @@ export class conflictException extends AppError {
 export class validationException extends AppError {
   constructor(message: Array<$ZodIssue>) {
     super(message as unknown as string, 400);
+  }
+}
+
+export class unauthorizedException extends AppError {
+  constructor(message: string) {
+    super(message, 401);
   }
 }

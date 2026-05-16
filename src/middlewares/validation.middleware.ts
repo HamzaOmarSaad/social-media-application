@@ -1,7 +1,7 @@
 import { $ZodIssue } from "zod/v4/core";
 import * as z from "zod";
 import { NextFunction, Request, Response } from "express";
-import { validationException } from "../utils/res/error.handle";
+import { validationException } from "../utils/res/exceptions/error.handle";
 
 type keyType = keyof Request;
 type schemaType = Partial<Record<keyof Request, z.ZodType>>;

@@ -4,7 +4,7 @@ import { GenderEnum, providerEnum, RoleEnum } from "../../Enums/enums";
 
 const userSchema: Schema<IUser> = new mongoose.Schema(
   {
-    name: {
+    userName: {
       type: String,
       required: true,
     },
@@ -14,13 +14,15 @@ const userSchema: Schema<IUser> = new mongoose.Schema(
     },
     password: {
       type: String,
-      required: true,
+      required: function (this) {
+        return this.provider == providerEnum.system;
+      },
     },
     phone: {
       type: String,
     },
     isEmailConfirmed: {
-      type: Boolean,
+      type: Date,
       default: false,
     },
     isDeleted: {
@@ -52,5 +54,5 @@ const userSchema: Schema<IUser> = new mongoose.Schema(
   },
 );
 
-const UserModel = mongoose.models.user || model("user", userSchema);
+const UserModel = mongoose.models.user || model<IUser>("user", userSchema);
 export default UserModel;

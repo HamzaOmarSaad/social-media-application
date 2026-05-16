@@ -1,16 +1,18 @@
-import { providerEnum } from "./../../Enums/enums";
+import { providerEnum, RoleEnum } from "./../../Enums/enums";
 import { HydratedDocument } from "mongoose";
 import { GenderEnum } from "../../Enums/enums";
 
 export interface IUser {
-  name: string;
+  userName: string;
   email: string;
-  password: string;
-  phone: string;
-  isEmailConfirmed: boolean;
-  isDeleted: boolean;
-  role: number;
+  password?: string;
+  phone?: string;
+  isEmailConfirmed?: Date;
+  isDeleted?: boolean;
+  role: RoleEnum;
   provider: providerEnum;
-  gender: GenderEnum;
+  gender?: GenderEnum;
+  changedCredentialsTime?: Date;
+  profilePicture?: string;
 }
 export type HUser = HydratedDocument<IUser>;

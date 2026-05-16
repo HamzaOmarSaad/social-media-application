@@ -14,7 +14,7 @@ import {
 type Doc<T> = HydratedDocument<T>;
 
 export class DBRepo<T extends object> {
-  constructor(private model: Model<T>) {}
+  constructor(protected readonly model: Model<T>) {}
 
   // ================= FIND MANY =================
   async find(
@@ -44,10 +44,11 @@ export class DBRepo<T extends object> {
   }
 
   // ================= CREATE ONE / MANY =================
-  async create(data: T | T[]): Promise<Doc<T> | Doc<T>[]> {
-    if (!Array.isArray(data)) {
-      return this.model.create(data);
-    }
+
+  async create(data: Partial<T>): Promise<Doc<T>> {
+    return this.model.create(data);
+  }
+  async createMany(data: Partial<T>[]): Promise<Doc<T>[]> {
     return this.model.create(data);
   }
 

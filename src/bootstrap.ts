@@ -1,17 +1,23 @@
+import redisService from "./utils/redis/redis.service";
 import express, { Express, Request, Response, NextFunction } from "express";
-import userRouter from "./modules/userModule/user.controller";
 import { PORT } from "./env/config";
 import { IAppError } from "./utils/types/res.type";
-import { NotFoundException } from "./utils/res/error.handle";
-import { connectDB, connectRedisDB } from "./DB/config/connection";
+import { connectDB } from "./DB/config/connection";
+import { authRouter } from "./modules";
+import { NotFoundException } from "./utils/res/exceptions/domain.exceptions";
 
 const app: Express = express();
 
 const bootstrap = async () => {
   app.use(express.json());
+
+  //db connections
   await connectDB();
-  await connectRedisDB();
-  app.use("/users", userRouter);
+  await redisService.connectRedisDB();
+
+  // application-routing
+  // app.use("/users");
+  app.use("/auth", authRouter);
 
   // unknown path
   app.all("{/*dummy}", (req, res, next) => {
